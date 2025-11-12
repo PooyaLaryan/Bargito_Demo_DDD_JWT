@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using OrderManagement.Domain.Enums;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Tickets.Query;
 using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Query
 {
-    public record GetMyTicketsQuery() : IRequest<IReadOnlyList<MyTicketQueryResult>>;
+    public record GetMyTicketsQuery() : IQuery<IReadOnlyList<MyTicketQueryResult>>;
     public record MyTicketQueryResult(Guid TicketId, string Title, string Description, string Status,string Priority,DateTime CreatedAt);
     public class GetMyTicketsQueryHandler : IRequestHandler<GetMyTicketsQuery, IReadOnlyList<MyTicketQueryResult>>
     {

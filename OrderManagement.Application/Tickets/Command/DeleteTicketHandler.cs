@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using OrderManagement.Domain.Enums;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Tickets.Command;
 using OrderManagement.Domain.Repositories.Tickets.Query;
 using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Command;
 
-public record DeleteTicketCommand(Guid TicketId) : IRequest;
+public record DeleteTicketCommand(Guid TicketId) : ICommand;
 internal class DeleteTicketHandler : IRequestHandler<DeleteTicketCommand>
 {
     private readonly ITicketCommandRepository _ticketCommandRepository;

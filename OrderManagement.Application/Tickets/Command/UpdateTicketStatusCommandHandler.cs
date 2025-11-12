@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using OrderManagement.Domain.Enums;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Tickets.Command;
 using OrderManagement.Domain.Repositories.Tickets.Query;
 using OrderManagement.Domain.Repositories.Users.Query;
@@ -7,7 +8,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Command;
 
-public record UpdateTicketCommand(Guid TicketId, Status Status) : IRequest<UpdateTicketCommandResult>;
+public record UpdateTicketCommand(Guid TicketId, Status Status) : ICommand<UpdateTicketCommandResult>;
 public record UpdateTicketCommandResult(Guid TicketId, string Title, string Description, string Status, string Priority, DateTime CreatedAt);
 
 public class UpdateTicketStatusCommandHandler : IRequestHandler<UpdateTicketCommand, UpdateTicketCommandResult>

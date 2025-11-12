@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Tickets.Query;
 using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Query;
 
-public record GetTicketByIdQuery(Guid TicketId) : IRequest<GetDetailTicketByIdQueryResult>;
+public record GetTicketByIdQuery(Guid TicketId) : IQuery<GetDetailTicketByIdQueryResult>;
 public record GetDetailTicketByIdQueryResult(Guid Id, string Title, string Description, string Status, string Priority, DateTime CreatedAt, DateTime UpdatedAt, Guid CreatedByUserId, Guid? AssignedToUserId);
 public class GetTicketByIdQueryHandler : IRequestHandler<GetTicketByIdQuery, GetDetailTicketByIdQueryResult>
 {

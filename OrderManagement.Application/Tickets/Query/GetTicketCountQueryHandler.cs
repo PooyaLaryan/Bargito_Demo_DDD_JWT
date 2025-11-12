@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using OrderManagement.Domain.Enums;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Tickets.Query;
 using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Query;
 
-public record GetTicketCountQuery(Status Status) : IRequest<int>;
+public record GetTicketCountQuery(Status Status) : IQuery<int>;
 public class GetTicketCountQueryHandler : IRequestHandler<GetTicketCountQuery, int>
 {
     private readonly ITicketQueryRepository _ticketQueryRepository;

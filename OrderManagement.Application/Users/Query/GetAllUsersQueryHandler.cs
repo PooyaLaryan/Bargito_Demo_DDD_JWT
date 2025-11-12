@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using OrderManagement.Domain.Dtos;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Users.Query;
 
 namespace OrderManagement.Application.Users.Query;
 
-public record GetAllUsersQuery() : IRequest<GetAllUsersResult>;
+public record GetAllUsersQuery() : IQuery<GetAllUsersResult>;
 public record GetAllUsersResult(IReadOnlyList<UsersDto> Users);
 public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, GetAllUsersResult>
 {

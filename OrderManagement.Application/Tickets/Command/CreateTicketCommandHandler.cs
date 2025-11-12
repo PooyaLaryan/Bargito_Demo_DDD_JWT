@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.Enums;
+using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Repositories.Tickets.Command;
 using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Command;
 
-public record CreateTicketCommand(string Title, string Description, Status Status, Priority Priority) : IRequest<CreateTicketResult>;
+public record CreateTicketCommand(string Title, string Description, Status Status, Priority Priority) : ICommand<CreateTicketResult>;
 public record CreateTicketResult(Guid Guid);
 public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, CreateTicketResult>
 {
