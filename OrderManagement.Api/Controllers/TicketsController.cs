@@ -75,4 +75,10 @@ public class TicketsController : ControllerBase
         var result = await _mediator.Send(new GetTicketByIdQuery(id));
         return Ok(result);
     }
+
+    [HttpGet("ExceptionResultTest")]
+    public IActionResult ExceptionResultTest()
+    {
+        throw new NotImplementedException();
+    }
 }

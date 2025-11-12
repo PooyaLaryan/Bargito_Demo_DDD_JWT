@@ -2,6 +2,7 @@ using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Ordermanagement.Infrastructure.Persistence;
 using Ordermanagement.Infrastructure.Repositories.Tickets.Command;
@@ -10,6 +11,7 @@ using Ordermanagement.Infrastructure.Repositories.Users.Command;
 using Ordermanagement.Infrastructure.Repositories.Users.Query;
 using Ordermanagement.Infrastructure.Services;
 using Ordermanagement.Infrastructure.Services.Security;
+using OrderManagement.Api.ApiInfrastructures;
 using OrderManagement.Application.Users;
 using OrderManagement.Application.Users.Command;
 using OrderManagement.Application.Users.Query;
@@ -28,7 +30,10 @@ internal class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options =>
+        {
+            options.Filters.Add<ResultsFilter>();
+        });
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
         builder.Services.AddSwaggerGen();
@@ -88,6 +93,8 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<ResultsExceptionMiddleware>();
 
         app.UseHttpsRedirection();
 
