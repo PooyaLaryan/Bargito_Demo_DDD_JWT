@@ -14,7 +14,7 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     }
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (request is not ICommand<TResponse>)
+        if (request is not IQueryRequest<TResponse> || request is not IQueryRequest)
             return await next();
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);

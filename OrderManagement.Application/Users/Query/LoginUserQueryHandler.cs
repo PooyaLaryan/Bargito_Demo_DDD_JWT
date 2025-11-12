@@ -5,7 +5,7 @@ using OrderManagement.Domain.Repositories.Security;
 using OrderManagement.Domain.Repositories.Users.Query;
 
 namespace OrderManagement.Application.Users.Query;
-public record LoginUserQuery(string Email, string Password) : IQuery<LoginUserResult>;
+public record LoginUserQuery(string Email, string Password) : IQueryRequest<LoginUserResult>;
 public record LoginUserResult(string Token, string FullName, UserRole Role);
 
 public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, LoginUserResult>

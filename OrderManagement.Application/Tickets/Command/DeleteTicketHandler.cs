@@ -7,7 +7,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Command;
 
-public record DeleteTicketCommand(Guid TicketId) : ICommand;
+public record DeleteTicketCommand(Guid TicketId) : ICommandRequest;
 internal class DeleteTicketHandler : IRequestHandler<DeleteTicketCommand>
 {
     private readonly ITicketCommandRepository _ticketCommandRepository;

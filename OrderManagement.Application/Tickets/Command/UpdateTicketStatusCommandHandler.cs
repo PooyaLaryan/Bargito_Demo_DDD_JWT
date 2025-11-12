@@ -8,7 +8,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Command;
 
-public record UpdateTicketCommand(Guid TicketId, Status Status) : ICommand<UpdateTicketCommandResult>;
+public record UpdateTicketCommand(Guid TicketId, Status Status) : ICommandRequest<UpdateTicketCommandResult>;
 public record UpdateTicketCommandResult(Guid TicketId, string Title, string Description, string Status, string Priority, DateTime CreatedAt);
 
 public class UpdateTicketStatusCommandHandler : IRequestHandler<UpdateTicketCommand, UpdateTicketCommandResult>

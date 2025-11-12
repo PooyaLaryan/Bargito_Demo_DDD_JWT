@@ -6,7 +6,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Query;
 
-public record GetTicketCountQuery(Status Status) : IQuery<int>;
+public record GetTicketCountQuery(Status Status) : IQueryRequest<int>;
 public class GetTicketCountQueryHandler : IRequestHandler<GetTicketCountQuery, int>
 {
     private readonly ITicketQueryRepository _ticketQueryRepository;

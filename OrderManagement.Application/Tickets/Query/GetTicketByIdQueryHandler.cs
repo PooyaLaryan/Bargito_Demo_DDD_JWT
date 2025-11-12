@@ -5,7 +5,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Query;
 
-public record GetTicketByIdQuery(Guid TicketId) : IQuery<GetDetailTicketByIdQueryResult>;
+public record GetTicketByIdQuery(Guid TicketId) : IQueryRequest<GetDetailTicketByIdQueryResult>;
 public record GetDetailTicketByIdQueryResult(Guid Id, string Title, string Description, string Status, string Priority, DateTime CreatedAt, DateTime UpdatedAt, Guid CreatedByUserId, Guid? AssignedToUserId);
 public class GetTicketByIdQueryHandler : IRequestHandler<GetTicketByIdQuery, GetDetailTicketByIdQueryResult>
 {

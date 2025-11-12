@@ -7,7 +7,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Command;
 
-public record CreateTicketCommand(string Title, string Description, Status Status, Priority Priority) : ICommand<CreateTicketResult>;
+public record CreateTicketCommand(string Title, string Description, Status Status, Priority Priority) : ICommandRequest<CreateTicketResult>;
 public record CreateTicketResult(Guid Guid);
 public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, CreateTicketResult>
 {

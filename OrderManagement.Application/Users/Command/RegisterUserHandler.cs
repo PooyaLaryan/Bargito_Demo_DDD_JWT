@@ -7,7 +7,7 @@ using OrderManagement.Domain.Repositories.Users.Command;
 namespace OrderManagement.Application.Users.Command;
 
 public record RegisterUserResult(Guid id);
-public record RegisterUserCommand(string FullName, string Email, string Password, UserRole UserRole) : ICommand<RegisterUserResult>;
+public record RegisterUserCommand(string FullName, string Email, string Password, UserRole UserRole) : ICommandRequest<RegisterUserResult>;
 
 public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, RegisterUserResult>
 {

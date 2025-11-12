@@ -6,7 +6,7 @@ using OrderManagement.Domain.Services;
 
 namespace OrderManagement.Application.Tickets.Query;
 
-public record GetAllTicketsQuery() : IQuery<IReadOnlyList<AllTicketsQueryResult>>;
+public record GetAllTicketsQuery() : IQueryRequest<IReadOnlyList<AllTicketsQueryResult>>;
 public record AllTicketsQueryResult(Guid TicketId, string Title, string Description, DateTime CreatedAt, string Status);
 public class GetAllTicketsQueryHandler : IRequestHandler<GetAllTicketsQuery, IReadOnlyList<AllTicketsQueryResult>>
 {
