@@ -1,4 +1,5 @@
 using System.Text;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -58,6 +59,8 @@ internal class Program
         builder.Services.AddDbContext<ReadDbContext>(option => option.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         // MediatR
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
+
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(RegisterUserHandler).Assembly));
         builder.Services.AddMediatR(cfg =>
@@ -74,6 +77,7 @@ internal class Program
         builder.Services.AddScoped<ITicketCommandRepository, TicketCommandRepository>();
         builder.Services.AddScoped<ITicketQueryRepository, TicketQueryRepository>();
         builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         var app = builder.Build();
 
