@@ -1,26 +1,4 @@
-using System.Text;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Ordermanagement.Infrastructure.Persistence;
-using Ordermanagement.Infrastructure.Repositories.Tickets.Command;
-using Ordermanagement.Infrastructure.Repositories.Tickets.Query;
-using Ordermanagement.Infrastructure.Repositories.Users.Command;
-using Ordermanagement.Infrastructure.Repositories.Users.Query;
-using Ordermanagement.Infrastructure.Services;
-using Ordermanagement.Infrastructure.Services.Security;
-using OrderManagement.Api.ApiInfrastructures;
-using OrderManagement.Application.Users;
-using OrderManagement.Application.Users.Command;
-using OrderManagement.Application.Users.Query;
-using OrderManagement.Domain.Repositories.Security;
-using OrderManagement.Domain.Repositories.Tickets.Command;
-using OrderManagement.Domain.Repositories.Tickets.Query;
-using OrderManagement.Domain.Repositories.Users.Command;
-using OrderManagement.Domain.Repositories.Users.Query;
-using OrderManagement.Domain.Services;
+using OrderManagement.Api.SystemExtensions;
 
 internal class Program
 {
@@ -28,88 +6,11 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
-        builder.Services.AddControllers(options =>
-        {
-            options.Filters.Add<ResultsFilter>();
-        });
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        builder.Services.AddOpenApi();
-        builder.Services.AddSwaggerGen();
-
-        // JWT
-        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
-
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings["Issuer"],
-                ValidAudience = jwtSettings["Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-            };
-        });
-
-        builder.Services.AddAuthorization();
-
-        //Db
-        builder.Services.AddDbContext<WriteDbContext>(option => option.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddDbContext<ReadDbContext>(option => option.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-        // MediatR
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-
-        builder.Services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(typeof(RegisterUserHandler).Assembly));
-        builder.Services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(typeof(LoginUserQueryHandler).Assembly));
-
-        //Accessor
-        builder.Services.AddHttpContextAccessor();
-
-        //Repo
-        builder.Services.AddScoped<DbSeeder>();
-        builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-        builder.Services.AddScoped<IUserCommandRepository, UserCommandRepository>();
-        builder.Services.AddScoped<IUserQueryRepository, LoginQueryRepository>();
-        builder.Services.AddScoped<ITicketCommandRepository, TicketCommandRepository>();
-        builder.Services.AddScoped<ITicketQueryRepository, TicketQueryRepository>();
-        builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddAllServices(builder.Configuration);
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseMiddleware<ResultsExceptionMiddleware>();
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthentication();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-
-        using (var scope = app.Services.CreateScope())
-        {
-            var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-            seeder.SeedAsync().GetAwaiter().GetResult();
-        }
+        app.UseServices();
 
         app.Run();
     }

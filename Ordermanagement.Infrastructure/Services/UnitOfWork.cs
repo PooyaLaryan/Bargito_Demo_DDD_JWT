@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Ordermanagement.Infrastructure.Persistence;
 using OrderManagement.Domain.Services;
 
@@ -7,11 +8,13 @@ namespace Ordermanagement.Infrastructure.Services;
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
     private readonly WriteDbContext _writeDbContext;
+    private readonly ReadDbContext _readDbContext;
     private IDbContextTransaction? _tx;
 
-    public UnitOfWork(WriteDbContext writeDbContext)
+    public UnitOfWork(WriteDbContext writeDbContext, ReadDbContext readDbContext)
     {
         _writeDbContext = writeDbContext;
+        _readDbContext = readDbContext;
     }
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
@@ -38,6 +41,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             await _tx.DisposeAsync();
             _tx = null;
         }
+    }
+
+    public void NoTracking(CancellationToken cancellationToken = default)
+    {
+        _readDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
     public void Dispose()

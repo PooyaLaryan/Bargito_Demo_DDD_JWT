@@ -2,7 +2,7 @@
 using OrderManagement.Domain.Repositories.Base;
 using OrderManagement.Domain.Services;
 
-namespace Ordermanagement.Infrastructure.Services;
+namespace Ordermanagement.Infrastructure.Services.Behaviors;
 
 public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
@@ -15,7 +15,10 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (request is not IQueryRequest<TResponse> || request is not IQueryRequest)
+        {
+            _unitOfWork.NoTracking();
             return await next();
+        }
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
