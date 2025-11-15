@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Ordermanagement.Infrastructure.Services.Security;
 using OrderManagement.Application.Users.Query;
 
 namespace OrderManagement.Api.Controllers;
@@ -17,7 +18,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _mediator.Send(new GetAllUsersQuery());
