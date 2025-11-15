@@ -6,7 +6,7 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddAllServices(builder.Configuration);
+        builder.Services.AddServices(builder.Configuration);
 
         var app = builder.Build();
 

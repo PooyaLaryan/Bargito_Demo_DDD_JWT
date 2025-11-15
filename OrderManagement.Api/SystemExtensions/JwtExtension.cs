@@ -8,7 +8,6 @@ namespace OrderManagement.Api.SystemExtensions
     {
         public static IServiceCollection AddJwt(this IServiceCollection serviceDescriptors, IConfiguration configuration)
         {
-            // JWT
             var jwtSettings = configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
