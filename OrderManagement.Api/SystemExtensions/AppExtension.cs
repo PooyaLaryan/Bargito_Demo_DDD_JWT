@@ -25,13 +25,6 @@ namespace OrderManagement.Api.SystemExtensions
 
             app.MapControllers();
 
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-                seeder.SeedAsync().GetAwaiter().GetResult();
-            }
-
             return app;
         }
     }

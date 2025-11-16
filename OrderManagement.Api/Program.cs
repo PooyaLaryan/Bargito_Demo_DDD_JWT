@@ -1,4 +1,5 @@
 using OrderManagement.Api.SystemExtensions;
+using OrderManagement.Application.Users;
 
 internal class Program
 {
@@ -11,6 +12,12 @@ internal class Program
         var app = builder.Build();
 
         app.UseServices();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+            seeder.SeedAsync().GetAwaiter().GetResult();
+        }
 
         app.Run();
     }

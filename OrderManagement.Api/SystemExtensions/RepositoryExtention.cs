@@ -11,6 +11,14 @@ using Ordermanagement.Infrastructure.Repositories.Users.Command;
 using Ordermanagement.Infrastructure.Repositories.Users.Query;
 using Ordermanagement.Infrastructure.Services.Security;
 using Ordermanagement.Infrastructure.Services;
+using OrderManagement.Domain.Repositories.Permissions.Command;
+using Ordermanagement.Infrastructure.Repositories.Permissions.Command;
+using OrderManagement.Domain.Repositories.Permissions.Query;
+using Ordermanagement.Infrastructure.Repositories.Permissions.Query;
+using OrderManagement.Domain.Repositories.UserPermissions.Query;
+using Ordermanagement.Infrastructure.Repositories.UserPermissions.Query;
+using OrderManagement.Domain.Repositories.UserPermissions.Command;
+using Ordermanagement.Infrastructure.Repositories.UserPermissions.Command;
 
 namespace OrderManagement.Api.SystemExtensions
 {
@@ -27,6 +35,10 @@ namespace OrderManagement.Api.SystemExtensions
             serviceDescriptors.AddScoped<ITicketQueryRepository, TicketQueryRepository>();
             serviceDescriptors.AddScoped<ITokenGenerator, JwtTokenGenerator>();
             serviceDescriptors.AddScoped<IUnitOfWork, UnitOfWork>();
+            serviceDescriptors.AddScoped<IPermissionCommandRepository, PermissionCommandRepository>();
+            serviceDescriptors.AddScoped<IPermissionQueryRepository, PermissionQueryRepository>();
+            serviceDescriptors.AddScoped<IUserPermissionCommandRepository, UserPermissionCommandRepository>();
+            serviceDescriptors.AddScoped<IUserPermissionQueryRepository, UserPermissionQueryRepository>();
 
             return serviceDescriptors;
         }
